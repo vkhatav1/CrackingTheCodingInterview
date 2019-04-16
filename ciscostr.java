@@ -8,7 +8,7 @@ public class HelloWorld{
         }
         
         for(int i=0; i<str.length(); i++){
-            if(arr[str.charAt(i)]== 1){
+            if(arr[str.charAt(i) - 'a']== 1){
                 System.out.println(str.charAt(i));
             }
         }
