@@ -1,7 +1,10 @@
-public class HelloWorld{
-    static boolean flag = true;
+import java.util.Scanner;
+public class palindrome {
+	 static boolean flag = true;
      public static void main(String []args){
-        int in = 0005;
+       Scanner sc = new Scanner(System.in);
+       int in = Integer.parseInt(sc.nextLine());
+       int count = 0;
         int reverse = 0;
         while(!pal(in)){
             int x = in;
@@ -10,9 +13,10 @@ public class HelloWorld{
                 reverse += x%10;
                 x = x/10;
             }
+            count += 1;
             in = in+reverse;
         }
-         System.out.println(in);  
+         System.out.println(count);  
         
      }
 
