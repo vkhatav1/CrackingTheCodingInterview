@@ -1,61 +1,100 @@
 import java.util.*;
-public class HelloWorld{
-     public static void main(String []args){
-        HelloWorld ob = new HelloWorld(); 
-       
-        
-        int ar1[] = {11, 4, 10, 7,20}; 
-        int ar2[] = {10, 20, 19, 40,7}; 
-        int m = ar1.length; 
-        int n = ar2.length; 
-        int x = 28; 
-        ob.printClosest(ar1, ar2, m, n, x); 
-    
-     }
-     
-    void printClosest(int ar1[], int ar2[], int m, int n, int x){ 
-        int max =0;
-        List<List<Integer>> l = new ArrayList<List<Integer>>();
-        List<List<Integer>> l1 = new ArrayList<List<Integer>>();
-        for(int i=0; i<m; i++){
-            for(int j=0; j<n; j++ ){
-                int sum = ar1.get(i).get(1)+ ar2.get(i).get(1);
-                if(sum == x){
-                    max = sum;
-                   List<Integer> b = new  ArrayList();
-                   b.add(i+1);
-                   b.add(j+1);
-                   l.add(b);
-                }else if(sum < x){
-                    if(sum > max){
-                        max = sum;
-                       List<Integer> n2 = new  ArrayList();
-                       n2.add(i+1);
-                       n2.add(j+1);
-                       l1.removeAll(l1);
-                       l1.add(n2);
-                    }else if(sum == max){
-                        max = sum;
-                       List<Integer> n1 = new  ArrayList();
-                       n1.add(i+1);
-                       n1.add(j+1);
-                       l1.add(n1);
-                    }
-                    
-                }
-            
+
+class entries{
+    int i;
+    int j;
+    int distance;
+    entries(int i,int j, int distance){
+        this.i = i;
+        this.j = j;
+        this.distance = distance;
+    }
+}
+
+public class HelloWorld {
+
+
+    static boolean isValid(int i,int j,int m,int n,int[][] matrix, boolean[][] visited){
+        if( i >= 0 && j>=0 && i<m && j<n && visited[i][j] == false && (matrix[i][j]==1 || matrix[i][j]==9 )){
+            return true;
+        }
+        return false;
+    }
+    static int remove_obstacle(int[][]matrix,int m,int n){
+        Deque<entries> d = new LinkedList<entries>();
+        int i=0,j=0;
+        boolean[][] visited = new boolean[m][n];
+
+
+        if(!isValid(i,j,m,n,matrix,visited)){
+            return -1;
+        }
+        d.add(new entries(i,j,0));
+
+        for(int x=0;x<m; x++){
+            for(int y=0; y<n; y++){
+                visited[x][y] = false;
             }
         }
+        visited[i][j] = true;
+        while(!d.isEmpty()){
 
-                if(l.size() > 0){
-                    for(List li: l){
-                        System.out.println(li.get(0)+ " "+ li.get(1));
-                    }
-                }else{
-                    for(List lis: l1){
-                        System.out.println(lis.get(0)+ " "+ lis.get(1));
-                    }
-                }
-      
-    } 
+            List<Integer> nlist = new ArrayList<Integer>();
+
+
+            entries nl = d.pop();
+            i =  nl.i;
+            j =  nl.j;
+            int distance = nl.distance;
+
+            visited[i][j] = true;
+
+            if(matrix[i][j] == 9)
+                return distance;
+            distance++;
+            if (isValid(i+1,j,m,n,matrix,visited)){
+
+                d.add(new entries(i+1,j,distance));
+            }
+
+            if (isValid(i - 1,j,m,n,matrix,visited)){
+
+                d.add(new entries(i-1,j,distance));
+
+            }
+
+            if (isValid(i,j + 1,m,n,matrix,visited)){
+                d.add(new entries(i,j+1,distance));
+
+            }
+
+            if (isValid(i,j - 1,m,n,matrix,visited)){
+                d.add(new entries(i,j-1,distance));
+
+            }
+
+        }
+        return -1;
+
+    }
+
+
+    public static void main(String []args){
+
+        int m = 1;
+        int n = 1;
+        int l[][] = {
+            {9}
+        };
+
+        int bfs = remove_obstacle(l, m, n);
+        System.out.println(bfs);
+        n=3;
+        m=3;
+        int arr[][] = {
+            {1, 0, 0},
+            {1, 0, 0},
+            {1, 9, 1}
+        };
+    }
 }
